@@ -2,8 +2,7 @@
 <html lang="fr" class="dark"> <!-- Ajout de la classe 'dark' pour un thème sombre par défaut --><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Ajout de la balise meta pour actualiser la page toutes les 5 minutes (300 secondes) -->
-    <meta http-equiv="refresh" content="300">
+    <!-- J'ai supprimé la ligne <meta http-equiv="refresh"> qui causait le problème -->
     <title>Le Mythe Écolo Démystifié – V.2025</title>
     <!-- Chargement de Tailwind CSS via CDN --><script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -26,7 +25,19 @@
                 background-image: linear-gradient(to right, #6EE7B7, #3B82F6);
             }
             .glassmorphism {
-                @apply backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-xl;
+                @apply backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-xl transition-all duration-500 ease-out;
+            }
+            /* Animation pour le changement de contenu */
+            .fade-out {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            .fade-in {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            #myth-content {
+                transition: opacity 0.4s ease-out, transform 0.4s ease-out;
             }
         }
     </style>
@@ -86,7 +97,7 @@
                 <!-- Section du Mythe --><div class="mb-8">
                     <h2 class="text-sm md:text-base font-bold text-red-400 uppercase tracking-widest mb-4 flex items-center">
                         <span class="text-xl md:text-2xl mr-2">💡</span> LE MYTHE
-                        <span class="ml-auto text-sm text-gray-400 font-mono">ID-2025-001</span>
+                        <span id="myth-id" class="ml-auto text-sm text-gray-400 font-mono">ID-2025-001</span>
                     </h2>
                     <blockquote class="relative pl-6 md:pl-8 py-2 border-l-4 border-red-500/50">
                         <p id="myth-text" class="text-2xl md:text-3xl font-medium text-gray-100 italic leading-snug"></p>
@@ -115,40 +126,89 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const mythText = document.getElementById('myth-text');
-            const explanationText = document.getElementById('explanation-text');
-            const updateTime = document.getElementById('update-time');
+            const mythArticle = document.getElementById('myth-content');
+            const mythIdEl = document.getElementById('myth-id');
+            const mythTextEl = document.getElementById('myth-text');
+            const explanationTextEl = document.getElementById('explanation-text');
+            const updateTimeEl = document.getElementById('update-time');
 
-            // --- Données du mythe codées en dur pour cet exemple ---
-            const mythData = {
-              "mythe": "Les éoliennes tuent des milliers d'oiseaux et sont inefficaces.",
-              "explication": "Le mythe selon lequel les éoliennes tuent un grand nombre d'oiseaux est souvent exagéré. Bien que des collisions se produisent, les études montrent que d'autres structures humaines (bâtiments, lignes électriques) et les chats domestiques sont responsables d'un nombre bien plus important de décès d'oiseaux.\n\nQuant à leur efficacité, les technologies éoliennes ont considérablement progressé. Les éoliennes modernes sont conçues pour être plus performantes même par vent modéré, et leur facteur de charge (le temps où elles produisent de l'électricité) est en constante amélioration. Elles jouent un rôle crucial dans la transition énergétique, produisant de l'électricité propre une fois installées, réduisant ainsi notre dépendance aux combustibles fossiles.",
-              "updated_at": "2025-11-01T10:30:00Z"
-            };
+            // --- Liste des mythes ---
+            const allMyths = [
+                {
+                  "id": "ID-2025-001",
+                  "mythe": "Les éoliennes tuent des milliers d'oiseaux et sont inefficaces.",
+                  "explication": "Le mythe selon lequel les éoliennes tuent un grand nombre d'oiseaux est souvent exagéré. Bien que des collisions se produisent, les études montrent que d'autres structures humaines (bâtiments, lignes électriques) et les chats domestiques sont responsables d'un nombre bien plus important de décès d'oiseaux.\n\nQuant à leur efficacité, les technologies éoliennes ont considérablement progressé. Les éoliennes modernes sont conçues pour être plus performantes même par vent modéré, et leur facteur de charge (le temps où elles produisent de l'électricité) est en constante amélioration.",
+                  "updated_at": "2025-11-01T10:30:00Z"
+                },
+                {
+                  "id": "ID-2025-002",
+                  "mythe": "Le recyclage ne sert à rien, tout finit à la décharge.",
+                  "explication": "C'est incorrect. Bien que les systèmes de recyclage ne soient pas parfaits, une grande partie des matériaux collectés est effectivement transformée en nouveaux produits. Le recyclage permet d'économiser des ressources naturelles, de l'énergie et de réduire les émissions de gaz à effet de serre par rapport à la production à partir de matières premières vierges. Le tri correct par les citoyens est crucial pour améliorer son efficacité.",
+                  "updated_at": "2025-10-15T09:15:00Z"
+                },
+                {
+                  "id": "ID-2025-003",
+                  "mythe": "Les voitures électriques polluent plus que les voitures thermiques à cause des batteries.",
+                  "explication": "Sur l'ensemble de leur cycle de vie (production, utilisation, fin de vie), les voitures électriques émettent globalement moins de CO2 que les voitures thermiques, même en comptant la production de la batterie. L'impact dépend du 'mix énergétique' du pays où l'électricité est produite, mais dans la grande majorité des cas, l'avantage reste à l'électrique et s'améliore à mesure que la production d'électricité devient plus verte.",
+                  "updated_at": "2025-11-05T14:00:00Z"
+                }
+            ];
             // --- Fin des données ---
 
-            try {
-                // Remplir le contenu
-                mythText.textContent = mythData.mythe;
-                // Utilisation de innerHTML pour les sauts de ligne et la mise en forme du texte
-                explanationText.innerHTML = mythData.explication.split('\n\n').map(p => `<p>${p}</p>`).join('');
+            let currentMythIndex = 0;
 
-                // Formater et afficher la date
-                const date = new Date(mythData.updated_at);
-                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                updateTime.textContent = date.toLocaleDateString('fr-FR', options);
-                updateTime.setAttribute('datetime', mythData.updated_at);
+            // Fonction pour charger un mythe dans le DOM
+            function loadMyth(index) {
+                try {
+                    const mythData = allMyths[index];
 
-            } catch (error) {
-                console.error('Erreur lors de l\'affichage du mythe:', error);
-                const container = document.getElementById('myth-container');
-                container.innerHTML = `
-                    <p class="text-red-500 text-center py-10">
-                        Une erreur est survenue lors du chargement des informations. Veuillez réessayer plus tard.
-                    </p>
-                `;
+                    // Appliquer l'animation de fondu
+                    mythArticle.classList.add('fade-out');
+
+                    // Attendre la fin de l'animation pour changer le contenu
+                    setTimeout(() => {
+                        // Remplir le contenu
+                        mythIdEl.textContent = mythData.id;
+                        mythTextEl.textContent = mythData.mythe;
+                        explanationTextEl.innerHTML = mythData.explication.split('\n\n').map(p => `<p>${p}</p>`).join('');
+
+                        // Formater et afficher la date
+                        const date = new Date(mythData.updated_at);
+                        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                        updateTimeEl.textContent = date.toLocaleDateString('fr-FR', options);
+                        updateTimeEl.setAttribute('datetime', mythData.updated_at);
+
+                        // Réappliquer l'animation d'apparition
+                        mythArticle.classList.remove('fade-out');
+                        mythArticle.classList.add('fade-in');
+                    }, 400); // Doit correspondre à la durée de la transition CSS
+
+                } catch (error) {
+                    console.error('Erreur lors de l\'affichage du mythe:', error);
+                    const container = document.getElementById('myth-container');
+                    container.innerHTML = `
+                        <p class="text-red-500 text-center py-10">
+                            Une erreur est survenue lors du chargement des informations. Veuillez réessayer plus tard.
+                        </p>
+                    `;
+                }
             }
+
+            // Charger le premier mythe au démarrage
+            loadMyth(currentMythIndex);
+
+            // Définir un intervalle pour changer le mythe toutes les 3 minutes
+            const TROIS_MINUTES = 3 * 60 * 1000; // 180000 millisecondes
+            
+            setInterval(() => {
+                // Passer au mythe suivant
+                currentMythIndex = (currentMythIndex + 1) % allMyths.length;
+                loadMyth(currentMythIndex);
+            }, TROIS_MINUTES);
         });
     </script>
 </body>
 </html>
+
+
+
