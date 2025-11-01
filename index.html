@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark"> <!-- Ajout de la classe 'dark' pour un thème sombre par défaut --><head>
+<html lang="fr" class="dark">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- J'ai supprimé la ligne <meta http-equiv="refresh"> qui causait le problème -->
     <title>Le Mythe Écolo Démystifié – V.2025</title>
-    <!-- Chargement de Tailwind CSS via CDN --><script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chargement de Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Polices -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Configuration de Tailwind et Styles Personnalisés -->
     <style type="text/tailwindcss">
         @layer base {
             body {
@@ -20,30 +26,33 @@
             code {
                 @apply font-['IBM_Plex_Mono'] text-purple-400;
             }
-            .gradient-text {
-                @apply bg-clip-text text-transparent;
-                background-image: linear-gradient(to right, #6EE7B7, #3B82F6);
-            }
-            .glassmorphism {
-                @apply backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-xl transition-all duration-500 ease-out;
-            }
-            /* Animation pour le changement de contenu */
-            .fade-out {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            .fade-in {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            #myth-content {
-                transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-            }
+        }
+        /* Classes personnalisées */
+        .gradient-text {
+            @apply bg-clip-text text-transparent;
+            background-image: linear-gradient(to right, #6EE7B7, #3B82F6);
+        }
+        .glassmorphism {
+            @apply backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-xl transition-all duration-500 ease-out;
+        }
+        /* Animations de transition pour le contenu */
+        #myth-content {
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        .fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
+    
     <script>
+        // Configuration de Tailwind (identique à votre version, c'est très bien)
         tailwind.config = {
-            darkMode: 'class', // Active le dark mode via une classe
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -51,7 +60,7 @@
                         mono: ['IBM Plex Mono', 'monospace'],
                     },
                     colors: {
-                        'gray-950': '#0F172A', // Un gris très foncé, presque noir
+                        'gray-950': '#0F172A',
                         'green-neon': '#6EE7B7',
                         'blue-accent': '#3B82F6',
                         'purple-accent': '#A78BFA',
@@ -77,12 +86,14 @@
 </head>
 <body class="bg-gray-950 text-gray-50 font-sans antialiased flex flex-col min-h-screen">
 
-    <!-- Grille de fond subtile --><div class="fixed inset-0 z-0 opacity-5 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100%25\' height=\'100%25\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cdefs%3E%3Cpattern id=\'smallGrid\' width=\'10\' height=\'10\' patternUnits=\'userSpaceOnUse\'%3E%3Cpath d=\'M 10 0 L 0 0 0 10\' fill=\'none\' stroke=\'%234A5568\' stroke-width=\'0.2\'/%3E%3C/pattern%3E%3Cpattern id=\'grid\' width=\'100\' height=\'100\' patternUnits=\'userSpaceOnUse\'%3E%3Crect width=\'100\' height=\'100\' fill=\'url(%23smallGrid)\'/%3E%3Cpath d=\'M 100 0 L 0 0 0 100\' fill=\'none\' stroke=\'%234A5568\' stroke-width=\'0.5\'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'url(%23grid)\'/%3E%3C/svg%3E');"></div>
+    <!-- Grille de fond subtile -->
+    <div class="fixed inset-0 z-0 opacity-5 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100%25\' height=\'100%25\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cdefs%3E%3Cpattern id=\'smallGrid\' width=\'10\' height=\'10\' patternUnits=\'userSpaceOnUse\'%3E%3Cpath d=\'M 10 0 L 0 0 0 10\' fill=\'none\' stroke=\'%234A5568\' stroke-width=\'0.2\'/%3E%3C/pattern%3E%3Cpattern id=\'grid\' width=\'100\' height=\'100\' patternUnits=\'userSpaceOnUse\'%3E%3Crect width=\'100\' height=\'100\' fill=\'url(%23smallGrid)\'/%3E%3Cpath d=\'M 100 0 L 0 0 0 100\' fill=\'none\' stroke=\'%234A5568\' stroke-width=\'0.5\'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'url(%23grid)\'/%3E%3C/svg%3E');"></div>
 
-
+    <!-- Conteneur principal -->
     <div class="relative z-10 flex-grow container mx-auto px-4 py-8 md:py-16 flex flex-col items-center justify-center">
 
-        <!-- En-tête --><header class="text-center mb-12 animate-fade-in-up" style="animation-delay: 0.1s;">
+        <!-- En-tête -->
+        <header class="text-center mb-12 animate-fade-in-up" style="animation-delay: 0.1s;">
             <h1 class="text-5xl md:text-7xl font-bold mb-4 leading-tight">
                 <span class="gradient-text">Le Mythe Écolo</span> <br class="md:hidden"> Démystifié <span class="text-green-neon">/</span>
             </h1>
@@ -91,124 +102,165 @@
             </p>
         </header>
 
-        <!-- Conteneur principal du mythe --><main id="myth-container" class="w-full max-w-4xl glassmorphism p-8 md:p-12 animate-fade-in-up" style="animation-delay: 0.3s;">
-
-            <article id="myth-content">
-                <!-- Section du Mythe --><div class="mb-8">
-                    <h2 class="text-sm md:text-base font-bold text-red-400 uppercase tracking-widest mb-4 flex items-center">
-                        <span class="text-xl md:text-2xl mr-2">💡</span> LE MYTHE
-                        <span id="myth-id" class="ml-auto text-sm text-gray-400 font-mono">ID-2025-001</span>
-                    </h2>
-                    <blockquote class="relative pl-6 md:pl-8 py-2 border-l-4 border-red-500/50">
-                        <p id="myth-text" class="text-2xl md:text-3xl font-medium text-gray-100 italic leading-snug"></p>
-                        <svg class="absolute -left-0.5 top-0.5 h-6 w-6 text-red-500/50 opacity-70" fill="currentColor" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
-                    </blockquote>
-                </div>
-
-                <hr class="my-10 border-gray-700/50">
-
-                <!-- Section de l'Explication --><div>
-                    <h2 class="text-sm md:text-base font-bold text-green-neon uppercase tracking-widest mb-4 flex items-center">
-                        <span class="text-xl md:text-2xl mr-2">✅</span> LA RÉALITÉ DÉCODÉE
-                    </h2>
-                    <div id="explanation-text" class="prose prose-invert prose-lg text-gray-300 space-y-4 leading-relaxed">
-                        <!-- Le contenu de l'explication sera inséré ici --></div>
-                </div>
+        <!-- Conteneur principal du mythe -->
+        <main id="myth-container" class="w-full max-w-4xl glassmorphism p-8 md:p-12 animate-fade-in-up" style="animation-delay: 0.3s;">
+            
+            <!-- 
+              Amélioration Accessibilité (A11y): 
+              'aria-live="polite"' indique aux lecteurs d'écran d'annoncer 
+              le changement de contenu lorsque l'utilisateur a fini son action.
+              'role="status"' donne un contexte sémantique.
+            -->
+            <article id="myth-content" role="status" aria-live="polite">
+                <!-- Contenu chargé par JS -->
+                <div class="text-center text-gray-400">Chargement du mythe...</div>
             </article>
 
         </main>
 
-        <!-- Pied de page --><footer class="text-center mt-12 text-gray-500 text-sm animate-fade-in-up" style="animation-delay: 0.5s;">
+        <!-- Pied de page -->
+        <footer class="text-center mt-12 text-gray-500 text-sm animate-fade-in-up" style="animation-delay: 0.5s;">
             <p class="mb-2">Dernière mise à jour du mythe : <time id="update-time" datetime="" class="text-green-neon font-mono"></time>.</p>
-            <p>Propulsé par l'IA et <span class="text-blue-accent">GitHub Actions</span>.</p>
+            <p>Propulsé par des faits et <span class="text-blue-accent">GitHub Pages</span>.</p>
         </footer>
     </div>
-
+    
+    <!-- 
+      AMÉLIORATION : SÉPARATION DONNÉES/LOGIQUE
+      Les données sont stockées proprement dans une balise JSON.
+      C'est plus facile à maintenir et à mettre à jour.
+    -->
+    <script id="myth-data" type="application/json">
+    [
+        {
+          "id": "ID-2025-001",
+          "mythe": "Les éoliennes tuent des milliers d'oiseaux et sont inefficaces.",
+          "explication": "Le mythe selon lequel les éoliennes tuent un grand nombre d'oiseaux est souvent exagéré. Bien que des collisions se produisent, les études montrent que d'autres structures humaines (bâtiments, lignes électriques) et les chats domestiques sont responsables d'un nombre bien plus important de décès d'oiseaux.\n\nQuant à leur efficacité, les technologies éoliennes ont considérablement progressé. Les éoliennes modernes sont conçues pour être plus performantes même par vent modéré, et leur facteur de charge (le temps où elles produisent de l'électricité) est en constante amélioration.",
+          "updated_at": "2025-11-01T10:30:00Z"
+        },
+        {
+          "id": "ID-2025-002",
+          "mythe": "Le recyclage ne sert à rien, tout finit à la décharge.",
+          "explication": "C'est incorrect. Bien que les systèmes de recyclage ne soient pas parfaits, une grande partie des matériaux collectés est effectivement transformée en nouveaux produits. Le recyclage permet d'économiser des ressources naturelles, de l'énergie et de réduire les émissions de gaz à effet de serre par rapport à la production à partir de matières premières vierges. Le tri correct par les citoyens est crucial pour améliorer son efficacité.",
+          "updated_at": "2025-10-15T09:15:00Z"
+        },
+        {
+          "id": "ID-2025-003",
+          "mythe": "Les voitures électriques polluent plus que les voitures thermiques à cause des batteries.",
+          "explication": "Sur l'ensemble de leur cycle de vie (production, utilisation, fin de vie), les voitures électriques émettent globalement moins de CO2 que les voitures thermiques, même en comptant la production de la batterie. L'impact dépend du 'mix énergétique' du pays où l'électricité est produite, mais dans la grande majorité des cas, l'avantage reste à l'électrique et s'améliore à mesure que la production d'électricité devient plus verte.",
+          "updated_at": "2025-11-05T14:00:00Z"
+        }
+    ]
+    </script>
+    
+    <!-- Script principal de l'application -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Constantes pour les éléments du DOM
             const mythArticle = document.getElementById('myth-content');
-            const mythIdEl = document.getElementById('myth-id');
-            const mythTextEl = document.getElementById('myth-text');
-            const explanationTextEl = document.getElementById('explanation-text');
             const updateTimeEl = document.getElementById('update-time');
-
-            // --- Liste des mythes ---
-            const allMyths = [
-                {
-                  "id": "ID-2025-001",
-                  "mythe": "Les éoliennes tuent des milliers d'oiseaux et sont inefficaces.",
-                  "explication": "Le mythe selon lequel les éoliennes tuent un grand nombre d'oiseaux est souvent exagéré. Bien que des collisions se produisent, les études montrent que d'autres structures humaines (bâtiments, lignes électriques) et les chats domestiques sont responsables d'un nombre bien plus important de décès d'oiseaux.\n\nQuant à leur efficacité, les technologies éoliennes ont considérablement progressé. Les éoliennes modernes sont conçues pour être plus performantes même par vent modéré, et leur facteur de charge (le temps où elles produisent de l'électricité) est en constante amélioration.",
-                  "updated_at": "2025-11-01T10:30:00Z"
-                },
-                {
-                  "id": "ID-2025-002",
-                  "mythe": "Le recyclage ne sert à rien, tout finit à la décharge.",
-                  "explication": "C'est incorrect. Bien que les systèmes de recyclage ne soient pas parfaits, une grande partie des matériaux collectés est effectivement transformée en nouveaux produits. Le recyclage permet d'économiser des ressources naturelles, de l'énergie et de réduire les émissions de gaz à effet de serre par rapport à la production à partir de matières premières vierges. Le tri correct par les citoyens est crucial pour améliorer son efficacité.",
-                  "updated_at": "2025-10-15T09:15:00Z"
-                },
-                {
-                  "id": "ID-2025-003",
-                  "mythe": "Les voitures électriques polluent plus que les voitures thermiques à cause des batteries.",
-                  "explication": "Sur l'ensemble de leur cycle de vie (production, utilisation, fin de vie), les voitures électriques émettent globalement moins de CO2 que les voitures thermiques, même en comptant la production de la batterie. L'impact dépend du 'mix énergétique' du pays où l'électricité est produite, mais dans la grande majorité des cas, l'avantage reste à l'électrique et s'améliore à mesure que la production d'électricité devient plus verte.",
-                  "updated_at": "2025-11-05T14:00:00Z"
-                }
-            ];
-            // --- Fin des données ---
-
+            const dataElement = document.getElementById('myth-data');
+            const mythContainer = document.getElementById('myth-container');
+            
+            // Constantes de configuration
+            const UNE_MINUTE = 1 * 60 * 1000; // 60000 ms
             let currentMythIndex = 0;
+            let allMyths = [];
+
+            // Fonction pour formater le HTML d'un mythe
+            function formatMythHTML(mythData) {
+                // Sépare l'explication en paragraphes
+                const explanationHtml = mythData.explication.split('\n\n').map(p => `<p>${p}</p>`).join('');
+                
+                return `
+                    <!-- Section du Mythe -->
+                    <div class="mb-8">
+                        <h2 class="text-sm md:text-base font-bold text-red-400 uppercase tracking-widest mb-4 flex items-center">
+                            <span class="text-xl md:text-2xl mr-2">💡</span> LE MYTHE
+                            <span class="ml-auto text-sm text-gray-400 font-mono">${mythData.id}</span>
+                        </h2>
+                        <blockquote class="relative pl-6 md:pl-8 py-2 border-l-4 border-red-500/50">
+                            <p class="text-2xl md:text-3xl font-medium text-gray-100 italic leading-snug">${mythData.mythe}</p>
+                            <svg class="absolute -left-0.5 top-0.5 h-6 w-6 text-red-500/50 opacity-70" fill="currentColor" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+                        </blockquote>
+                    </div>
+
+                    <hr class="my-10 border-gray-700/50">
+
+                    <!-- Section de l'Explication -->
+                    <div>
+                        <h2 class="text-sm md:text-base font-bold text-green-neon uppercase tracking-widest mb-4 flex items-center">
+                            <span class="text-xl md:text-2xl mr-2">✅</span> LA RÉALITÉ DÉCODÉE
+                        </h2>
+                        <div class="prose prose-invert prose-lg text-gray-300 space-y-4 leading-relaxed">
+                            ${explanationHtml}
+                        </div>
+                    </div>
+                `;
+            }
 
             // Fonction pour charger un mythe dans le DOM
             function loadMyth(index) {
+                if (!allMyths[index]) return; // Sécurité
+                
+                const mythData = allMyths[index];
+
+                // Appliquer l'animation de fondu sortant
+                mythArticle.classList.add('fade-out');
+
+                // Attendre la fin de l'animation pour changer le contenu
+                setTimeout(() => {
+                    // Remplir le contenu
+                    mythArticle.innerHTML = formatMythHTML(mythData);
+
+                    // Formater et afficher la date
+                    const date = new Date(mythData.updated_at);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    updateTimeEl.textContent = date.toLocaleDateString('fr-FR', options);
+                    updateTimeEl.setAttribute('datetime', mythData.updated_at);
+
+                    // Réappliquer l'animation d'apparition
+                    mythArticle.classList.remove('fade-out');
+                    mythArticle.classList.add('fade-in');
+                }, 400); // Doit correspondre à la durée de la transition CSS
+            }
+
+            // Fonction principale d'initialisation
+            function initialize() {
                 try {
-                    const mythData = allMyths[index];
+                    // AMÉLIORATION : Parser les données depuis la balise JSON
+                    allMyths = JSON.parse(dataElement.textContent);
+                    
+                    if (!allMyths || allMyths.length === 0) {
+                        throw new Error("Aucune donnée de mythe n'a été trouvée.");
+                    }
 
-                    // Appliquer l'animation de fondu
-                    mythArticle.classList.add('fade-out');
+                    // Charger le premier mythe au démarrage
+                    loadMyth(currentMythIndex);
 
-                    // Attendre la fin de l'animation pour changer le contenu
-                    setTimeout(() => {
-                        // Remplir le contenu
-                        mythIdEl.textContent = mythData.id;
-                        mythTextEl.textContent = mythData.mythe;
-                        explanationTextEl.innerHTML = mythData.explication.split('\n\n').map(p => `<p>${p}</p>`).join('');
-
-                        // Formater et afficher la date
-                        const date = new Date(mythData.updated_at);
-                        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                        updateTimeEl.textContent = date.toLocaleDateString('fr-FR', options);
-                        updateTimeEl.setAttribute('datetime', mythData.updated_at);
-
-                        // Réappliquer l'animation d'apparition
-                        mythArticle.classList.remove('fade-out');
-                        mythArticle.classList.add('fade-in');
-                    }, 400); // Doit correspondre à la durée de la transition CSS
+                    // Définir un intervalle pour changer le mythe
+                    setInterval(() => {
+                        currentMythIndex = (currentMythIndex + 1) % allMyths.length;
+                        loadMyth(currentMythIndex);
+                    }, UNE_MINUTE);
 
                 } catch (error) {
-                    console.error('Erreur lors de l\'affichage du mythe:', error);
-                    const container = document.getElementById('myth-container');
-                    container.innerHTML = `
-                        <p class="text-red-500 text-center py-10">
-                            Une erreur est survenue lors du chargement des informations. Veuillez réessayer plus tard.
-                        </p>
+                    console.error('Erreur critique lors de l\'initialisation:', error);
+                    // Afficher un message d'erreur clair à l'utilisateur
+                    mythContainer.innerHTML = `
+                        <div class="text-red-400 text-center py-10">
+                            <h2 class="text-2xl font-bold mb-4">Erreur de chargement</h2>
+                            <p class="text-lg">Impossible de charger les mythes. Le fichier de données est peut-être mal formaté.</p>
+                            <p class="text-sm mt-4 font-mono">${error.message}</p>
+                        </div>
                     `;
                 }
             }
 
-            // Charger le premier mythe au démarrage
-            loadMyth(currentMythIndex);
-
-            // Définir un intervalle pour changer le mythe toutes les 3 minutes
-            const TROIS_MINUTES = 3 * 60 * 1000; // 180000 millisecondes
-            
-            setInterval(() => {
-                // Passer au mythe suivant
-                currentMythIndex = (currentMythIndex + 1) % allMyths.length;
-                loadMyth(currentMythIndex);
-            }, TROIS_MINUTES);
+            // Lancer l'application
+            initialize();
         });
     </script>
 </body>
 </html>
-
-
 
