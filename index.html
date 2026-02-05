@@ -1,266 +1,458 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Mythe Écolo Démystifié – V.2025</title>
+    <title>ECO-TRUTH 2025 – L'Algorithme de la Vérité</title>
     
-    <!-- Chargement de Tailwind CSS via CDN -->
+    <!-- Chargement de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Polices -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Polices Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     
-    <!-- Configuration de Tailwind et Styles Personnalisés -->
+    <!-- Configuration Tailwind & Styles Custom -->
     <style type="text/tailwindcss">
         @layer base {
             body {
-                @apply bg-gray-950 text-gray-50 font-['Space_Grotesk'] antialiased;
+                @apply bg-[#030303] text-slate-50 font-['Outfit'] antialiased selection:bg-green-500/30 selection:text-green-200;
             }
-            h1, h2, h3, h4, h5, h6 {
-                @apply font-['Space_Grotesk'] text-gray-100;
+            h1, h2, h3 {
+                @apply font-['Outfit'] tracking-tight;
             }
-            p {
-                @apply text-gray-300;
+            .font-display {
+                font-family: 'Syncopate', sans-serif;
             }
             code {
-                @apply font-['IBM_Plex_Mono'] text-purple-400;
+                @apply font-['JetBrains_Mono'];
             }
         }
-        /* Classes personnalisées */
-        .gradient-text {
-            @apply bg-clip-text text-transparent;
-            background-image: linear-gradient(to right, #6EE7B7, #3B82F6);
+
+        /* Effets Glassmorphism & UI Avancés */
+        .glass-panel {
+            @apply bg-slate-900/40 backdrop-blur-xl border border-white/10;
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
-        .glassmorphism {
-            @apply backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-xl transition-all duration-500 ease-out;
+
+        .glass-nav {
+            @apply bg-[#030303]/80 backdrop-blur-md border-b border-white/5;
         }
-        /* Animations de transition pour le contenu */
-        #myth-content {
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+
+        /* Texture de Bruit (Noise) pour effet Premium */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
-        .fade-out {
+
+        /* Animations de Scroll (Reveal) */
+        .reveal {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .fade-in {
+        .reveal.active {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Animations Reactives du Widget */
+        .fade-enter-active {
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-exit-active {
+            animation: fadeOut 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.98); }
+        }
+
+        /* Barre de progression */
+        .progress-bar {
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, #34D399, #3B82F6);
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
+        }
+        
+        /* Grille de fond animée */
+        .bg-grid {
+            background-size: 60px 60px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at 50% 0%, black 40%, transparent 100%);
         }
     </style>
     
     <script>
-        // Configuration de Tailwind (identique à votre version, c'est très bien)
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Space Grotesk', 'sans-serif'],
-                        mono: ['IBM Plex Mono', 'monospace'],
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        display: ['Syncopate', 'sans-serif'],
                     },
                     colors: {
-                        'gray-950': '#0F172A',
-                        'green-neon': '#6EE7B7',
-                        'blue-accent': '#3B82F6',
-                        'purple-accent': '#A78BFA',
-                    },
-                    keyframes: {
-                        'fade-in-up': {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        'pulse-glow': {
-                            '0%, 100%': { 'box-shadow': '0 0 0px rgba(100, 255, 218, 0.4)' },
-                            '50%': { 'box-shadow': '0 0 15px rgba(100, 255, 218, 0.7)' },
-                        }
+                        'eco-green': '#10B981',
+                        'tech-blue': '#3B82F6',
                     },
                     animation: {
-                        'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
-                        'pulse-glow': 'pulse-glow 2s infinite',
+                        'blob': 'blob 10s infinite',
+                        'scroll': 'scroll 20s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-gray-950 text-gray-50 font-sans antialiased flex flex-col min-h-screen">
+<body class="relative overflow-x-hidden">
 
-    <!-- Grille de fond subtile -->
-    <div class="fixed inset-0 z-0 opacity-5 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100%25\' height=\'100%25\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cdefs%3E%3Cpattern id=\'smallGrid\' width=\'10\' height=\'10\' patternUnits=\'userSpaceOnUse\'%3E%3Cpath d=\'M 10 0 L 0 0 0 10\' fill=\'none\' stroke=\'%234A5568\' stroke-width=\'0.2\'/%3E%3C/pattern%3E%3Cpattern id=\'grid\' width=\'100\' height=\'100\' patternUnits=\'userSpaceOnUse\'%3E%3Crect width=\'100\' height=\'100\' fill=\'url(%23smallGrid)\'/%3E%3Cpath d=\'M 100 0 L 0 0 0 100\' fill=\'none\' stroke=\'%234A5568\' stroke-width=\'0.5\'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'url(%23grid)\'/%3E%3C/svg%3E');"></div>
+    <!-- Texture Noise Overlay -->
+    <div class="bg-noise"></div>
 
-    <!-- Conteneur principal -->
-    <div class="relative z-10 flex-grow container mx-auto px-4 py-8 md:py-16 flex flex-col items-center justify-center">
+    <!-- Navigation Sticky -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="font-display font-bold text-lg tracking-widest text-white">ECO-TRUTH</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-mono text-slate-400">
+                <a href="#monitor" class="hover:text-white transition-colors">MONITOR</a>
+                <a href="#manifesto" class="hover:text-white transition-colors">MANIFESTO</a>
+                <a href="#stack" class="hover:text-white transition-colors">STACK</a>
+                <a href="https://samynantoyabasse-shop.fourthwall.com" target="_blank" class="px-4 py-2 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all">SHOP</a>
+            </div>
+        </div>
+    </nav>
 
-        <!-- En-tête -->
-        <header class="text-center mb-12 animate-fade-in-up" style="animation-delay: 0.1s;">
-            <h1 class="text-5xl md:text-7xl font-bold mb-4 leading-tight">
-                <span class="gradient-text">Le Mythe Écolo</span> <br class="md:hidden"> Démystifié <span class="text-green-neon">/</span>
-            </h1>
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
-                Plongez au cœur des idées reçues sur l'écologie. Analyse factuelle, sans fard.
-            </p>
-        </header>
-
-        <!-- Conteneur principal du mythe -->
-        <main id="myth-container" class="w-full max-w-4xl glassmorphism p-8 md:p-12 animate-fade-in-up" style="animation-delay: 0.3s;">
-            
-            <!-- 
-              Amélioration Accessibilité (A11y): 
-              'aria-live="polite"' indique aux lecteurs d'écran d'annoncer 
-              le changement de contenu lorsque l'utilisateur a fini son action.
-              'role="status"' donne un contexte sémantique.
-            -->
-            <article id="myth-content" role="status" aria-live="polite">
-                <!-- Contenu chargé par JS -->
-                <div class="text-center text-gray-400">Chargement du mythe...</div>
-            </article>
-
-        </main>
-
-        <!-- Pied de page -->
-        <footer class="text-center mt-12 text-gray-500 text-sm animate-fade-in-up" style="animation-delay: 0.5s;">
-            <p class="mb-2">Dernière mise à jour du mythe : <time id="update-time" datetime="" class="text-green-neon font-mono"></time>.</p>
-            <p>Propulsé par des faits et <span class="text-blue-accent">GitHub Pages</span>.</p>
-        </footer>
+    <!-- Arrière-plan global -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-grid"></div>
+        <!-- Orbes d'ambiance -->
+        <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full filter blur-[100px] animate-blob"></div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-blue-600/10 rounded-full filter blur-[120px] animate-blob animation-delay-2000"></div>
     </div>
-    
-    <!-- 
-      AMÉLIORATION : SÉPARATION DONNÉES/LOGIQUE
-      Les données sont stockées proprement dans une balise JSON.
-      C'est plus facile à maintenir et à mettre à jour.
-    -->
+
+    <!-- SECTION 1: HERO / MONITOR -->
+    <section id="monitor" class="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 pt-20">
+        <div class="text-center mb-12 space-y-6 reveal active">
+            <div class="inline-flex items-center px-4 py-1.5 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 text-xs font-mono tracking-widest uppercase shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                Live Data Stream V.2025
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-200 to-slate-500 leading-[0.9] tracking-tighter">
+                DÉCODER<br>LA RÉALITÉ
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                L'algorithme qui dissipe le brouillard cognitif.
+            </p>
+        </div>
+
+        <!-- Le Widget "Cerveau" -->
+        <div class="w-full max-w-4xl mx-auto reveal active delay-100">
+            <div id="card-container" class="glass-panel rounded-3xl relative overflow-hidden transition-all duration-500 hover:shadow-[0_0_80px_rgba(59,130,246,0.15)] group transform hover:-translate-y-1">
+                
+                <!-- Barre de progression -->
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-white/5">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+
+                <div class="p-8 md:p-16 relative min-h-[400px] flex flex-col justify-center">
+                    <!-- Indicateur Pause -->
+                    <div class="absolute top-6 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 pointer-events-none">
+                        <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Pause</span>
+                        <div class="flex gap-1">
+                            <div class="w-1 h-3 bg-green-400 rounded-full"></div>
+                            <div class="w-1 h-3 bg-green-400 rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <article id="myth-content">
+                        <!-- Contenu injecté par JS -->
+                        <div class="flex items-center justify-center h-full">
+                           <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Footer Carte -->
+                <div class="px-8 py-5 border-t border-white/5 bg-black/20 flex justify-between items-center text-xs font-mono text-slate-500">
+                    <div class="flex items-center gap-4">
+                        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> SYNC ONLINE</span>
+                        <span class="hidden md:inline text-slate-700">|</span>
+                        <span>ID: <span id="myth-id" class="text-slate-300">LOADING</span></span>
+                    </div>
+                    <div>SOURCE: VERIFIED_DB</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- BANDEAU DÉFILANT -->
+    <div class="relative z-10 py-8 bg-white/5 border-y border-white/10 backdrop-blur-sm overflow-hidden">
+        <div class="flex whitespace-nowrap animate-scroll">
+            <span class="text-4xl font-display font-bold text-white/10 px-8">DATA DRIVEN ECOLOGY • NO BULLSHIT • PURE FACTS •</span>
+            <span class="text-4xl font-display font-bold text-white/10 px-8">DATA DRIVEN ECOLOGY • NO BULLSHIT • PURE FACTS •</span>
+            <span class="text-4xl font-display font-bold text-white/10 px-8">DATA DRIVEN ECOLOGY • NO BULLSHIT • PURE FACTS •</span>
+            <span class="text-4xl font-display font-bold text-white/10 px-8">DATA DRIVEN ECOLOGY • NO BULLSHIT • PURE FACTS •</span>
+        </div>
+    </div>
+
+    <!-- SECTION 2: MANIFESTO -->
+    <section id="manifesto" class="relative z-10 py-32 px-4 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div class="reveal">
+                <h2 class="text-sm font-bold text-green-400 tracking-[0.2em] uppercase mb-4">La Mission</h2>
+                <h3 class="text-4xl md:text-5xl font-bold leading-tight mb-8">
+                    À l'ère de la post-vérité,<br>
+                    <span class="text-slate-500">la donnée est une arme.</span>
+                </h3>
+                <p class="text-slate-400 text-lg leading-relaxed mb-6">
+                    Ce projet n'est pas un simple site web. C'est un <strong>dissipateur de brouillard cognitif</strong>. Conçu pour déconstruire les mythes écologiques avec une précision chirurgicale.
+                </p>
+                <a href="https://monblog-sa-abasse.blogspot.com/" target="_blank" class="inline-flex items-center text-white border-b border-green-500 pb-1 hover:text-green-400 transition-colors group">
+                    Lire le Manifesto Complet 
+                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 reveal delay-200">
+                <div class="glass-panel p-6 rounded-2xl aspect-square flex flex-col justify-between hover:bg-white/5 transition-colors">
+                    <span class="text-3xl">⚡</span>
+                    <span class="font-mono text-sm text-slate-300">Vitesse<br>Instantannée</span>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl aspect-square flex flex-col justify-between hover:bg-white/5 transition-colors mt-8">
+                    <span class="text-3xl">🧠</span>
+                    <span class="font-mono text-sm text-slate-300">Impact<br>Cognitif</span>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl aspect-square flex flex-col justify-between hover:bg-white/5 transition-colors -mt-8">
+                    <span class="text-3xl">🛡️</span>
+                    <span class="font-mono text-sm text-slate-300">Zero<br>Bullshit</span>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl aspect-square flex flex-col justify-between hover:bg-white/5 transition-colors">
+                    <span class="text-3xl">💎</span>
+                    <span class="font-mono text-sm text-slate-300">Design<br>Premium</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: STACK -->
+    <section id="stack" class="relative z-10 py-24 bg-black/40 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-sm font-bold text-blue-400 tracking-[0.2em] uppercase mb-12 reveal">Architecture Zero-Dependency</h2>
+            
+            <div class="flex flex-wrap justify-center gap-4 reveal">
+                <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-mono text-slate-300 hover:border-blue-500/50 hover:text-white transition-colors cursor-default">
+                    Tailwind CSS (JIT)
+                </div>
+                <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-mono text-slate-300 hover:border-yellow-500/50 hover:text-white transition-colors cursor-default">
+                    Vanilla JS (ES6+)
+                </div>
+                <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-mono text-slate-300 hover:border-green-500/50 hover:text-white transition-colors cursor-default">
+                    GitHub Actions
+                </div>
+                <div class="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-mono text-slate-300 hover:border-purple-500/50 hover:text-white transition-colors cursor-default">
+                    JSON Data-Driven
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 py-12 border-t border-white/10 bg-[#020202]">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-left">
+                <h4 class="font-display font-bold text-xl text-white mb-2">ECO-TRUTH</h4>
+                <p class="text-xs font-mono text-slate-500">© 2025 SAMYN-ANTOY ABASSE. TOUS DROITS RÉSERVÉS.</p>
+            </div>
+            
+            <div class="flex gap-6">
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm font-mono">GITHUB</a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm font-mono">LINKEDIN</a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors text-sm font-mono">BLOG</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DONNÉES JSON -->
     <script id="myth-data" type="application/json">
     [
         {
-          "id": "ID-2025-001",
-          "mythe": "Les éoliennes tuent des milliers d'oiseaux et sont inefficaces.",
-          "explication": "Le mythe selon lequel les éoliennes tuent un grand nombre d'oiseaux est souvent exagéré. Bien que des collisions se produisent, les études montrent que d'autres structures humaines (bâtiments, lignes électriques) et les chats domestiques sont responsables d'un nombre bien plus important de décès d'oiseaux.\n\nQuant à leur efficacité, les technologies éoliennes ont considérablement progressé. Les éoliennes modernes sont conçues pour être plus performantes même par vent modéré, et leur facteur de charge (le temps où elles produisent de l'électricité) est en constante amélioration.",
+          "id": "2025-ALPHA",
+          "mythe": "Les éoliennes sont des tueuses d'oiseaux massives.",
+          "explication": "C'est un biais cognitif classique de disproportion. Les données réelles montrent que les gratte-ciels tuent 2000x plus d'oiseaux, et les chats domestiques 5000x plus. L'industrie éolienne moderne utilise désormais des systèmes de détection par IA et des peintures contrastées (pales noires) qui réduisent les collisions de 70%.",
           "updated_at": "2025-11-01T10:30:00Z"
         },
         {
-          "id": "ID-2025-002",
-          "mythe": "Le recyclage ne sert à rien, tout finit à la décharge.",
-          "explication": "C'est incorrect. Bien que les systèmes de recyclage ne soient pas parfaits, une grande partie des matériaux collectés est effectivement transformée en nouveaux produits. Le recyclage permet d'économiser des ressources naturelles, de l'énergie et de réduire les émissions de gaz à effet de serre par rapport à la production à partir de matières premières vierges. Le tri correct par les citoyens est crucial pour améliorer son efficacité.",
+          "id": "2025-BETA",
+          "mythe": "Le recyclage est une arnaque, tout est brûlé.",
+          "explication": "Faux. Bien que le système ne soit pas parfait (environ 20% d'erreurs de tri), l'économie circulaire est une réalité industrielle. En France, 72% des emballages ménagers sont effectivement recyclés. L'aluminium et le verre sont recyclables à l'infini.",
           "updated_at": "2025-10-15T09:15:00Z"
         },
         {
-          "id": "ID-2025-003",
-          "mythe": "Les voitures électriques polluent plus que les voitures thermiques à cause des batteries.",
-          "explication": "Sur l'ensemble de leur cycle de vie (production, utilisation, fin de vie), les voitures électriques émettent globalement moins de CO2 que les voitures thermiques, même en comptant la production de la batterie. L'impact dépend du 'mix énergétique' du pays où l'électricité est produite, mais dans la grande majorité des cas, l'avantage reste à l'électrique et s'améliore à mesure que la production d'électricité devient plus verte.",
+          "id": "2025-GAMMA",
+          "mythe": "La voiture électrique pollue plus à cause de la batterie.",
+          "explication": "L'analyse du Cycle de Vie (ACV) prouve le contraire. Même avec une batterie produite en Chine, une voiture électrique rembourse sa 'dette carbone' en 30 000 km en France. Sur sa vie totale, elle émet 3 à 4 fois moins de CO2.",
           "updated_at": "2025-11-05T14:00:00Z"
-        }
+        },
+        {
+            "id": "2025-DELTA",
+            "mythe": "Internet est immatériel et ne pollue pas.",
+            "explication": "Le numérique émet désormais plus de gaz à effet de serre (4%) que l'aviation civile mondiale. Chaque requête, chaque streaming 4K active des serveurs refroidis en permanence. La sobriété numérique est une nécessité physique.",
+            "updated_at": "2025-12-01T08:00:00Z"
+          }
     ]
     </script>
     
-    <!-- Script principal de l'application -->
+    <!-- Moteur JS -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Constantes pour les éléments du DOM
-            const mythArticle = document.getElementById('myth-content');
-            const updateTimeEl = document.getElementById('update-time');
-            const dataElement = document.getElementById('myth-data');
-            const mythContainer = document.getElementById('myth-container');
-            
-            // Constantes de configuration
-            const UNE_MINUTE = 1 * 60 * 1000; // 60000 ms
-            let currentMythIndex = 0;
-            let allMyths = [];
+            // --- LOGIQUE D'ANIMATION AU SCROLL ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
 
-            // Fonction pour formater le HTML d'un mythe
-            function formatMythHTML(mythData) {
-                // Sépare l'explication en paragraphes
-                const explanationHtml = mythData.explication.split('\n\n').map(p => `<p>${p}</p>`).join('');
-                
-                return `
-                    <!-- Section du Mythe -->
-                    <div class="mb-8">
-                        <h2 class="text-sm md:text-base font-bold text-red-400 uppercase tracking-widest mb-4 flex items-center">
-                            <span class="text-xl md:text-2xl mr-2">💡</span> LE MYTHE
-                            <span class="ml-auto text-sm text-gray-400 font-mono">${mythData.id}</span>
-                        </h2>
-                        <blockquote class="relative pl-6 md:pl-8 py-2 border-l-4 border-red-500/50">
-                            <p class="text-2xl md:text-3xl font-medium text-gray-100 italic leading-snug">${mythData.mythe}</p>
-                            <svg class="absolute -left-0.5 top-0.5 h-6 w-6 text-red-500/50 opacity-70" fill="currentColor" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
-                        </blockquote>
-                    </div>
-
-                    <hr class="my-10 border-gray-700/50">
-
-                    <!-- Section de l'Explication -->
-                    <div>
-                        <h2 class="text-sm md:text-base font-bold text-green-neon uppercase tracking-widest mb-4 flex items-center">
-                            <span class="text-xl md:text-2xl mr-2">✅</span> LA RÉALITÉ DÉCODÉE
-                        </h2>
-                        <div class="prose prose-invert prose-lg text-gray-300 space-y-4 leading-relaxed">
-                            ${explanationHtml}
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Fonction pour charger un mythe dans le DOM
-            function loadMyth(index) {
-                if (!allMyths[index]) return; // Sécurité
-                
-                const mythData = allMyths[index];
-
-                // Appliquer l'animation de fondu sortant
-                mythArticle.classList.add('fade-out');
-
-                // Attendre la fin de l'animation pour changer le contenu
-                setTimeout(() => {
-                    // Remplir le contenu
-                    mythArticle.innerHTML = formatMythHTML(mythData);
-
-                    // Formater et afficher la date
-                    const date = new Date(mythData.updated_at);
-                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                    updateTimeEl.textContent = date.toLocaleDateString('fr-FR', options);
-                    updateTimeEl.setAttribute('datetime', mythData.updated_at);
-
-                    // Réappliquer l'animation d'apparition
-                    mythArticle.classList.remove('fade-out');
-                    mythArticle.classList.add('fade-in');
-                }, 400); // Doit correspondre à la durée de la transition CSS
-            }
-
-            // Fonction principale d'initialisation
-            function initialize() {
-                try {
-                    // AMÉLIORATION : Parser les données depuis la balise JSON
-                    allMyths = JSON.parse(dataElement.textContent);
-                    
-                    if (!allMyths || allMyths.length === 0) {
-                        throw new Error("Aucune donnée de mythe n'a été trouvée.");
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optionnel: arrêter d'observer une fois apparu
+                        // observer.unobserve(entry.target); 
                     }
+                });
+            }, observerOptions);
 
-                    // Charger le premier mythe au démarrage
-                    loadMyth(currentMythIndex);
+            document.querySelectorAll('.reveal').forEach(el => {
+                observer.observe(el);
+            });
 
-                    // Définir un intervalle pour changer le mythe
-                    setInterval(() => {
-                        currentMythIndex = (currentMythIndex + 1) % allMyths.length;
-                        loadMyth(currentMythIndex);
-                    }, UNE_MINUTE);
+            // --- LOGIQUE DU WIDGET (Similaire à avant) ---
+            const DUREE_ROTATION = 30000;
+            const UPDATE_INTERVAL = 100;
+            
+            const contentEl = document.getElementById('myth-content');
+            const idEl = document.getElementById('myth-id');
+            const progressBar = document.getElementById('progress-bar');
+            const container = document.getElementById('card-container');
+            
+            let myths = [];
+            let currentIndex = 0;
+            let startTime = Date.now();
+            let isPaused = false;
 
-                } catch (error) {
-                    console.error('Erreur critique lors de l\'initialisation:', error);
-                    // Afficher un message d'erreur clair à l'utilisateur
-                    mythContainer.innerHTML = `
-                        <div class="text-red-400 text-center py-10">
-                            <h2 class="text-2xl font-bold mb-4">Erreur de chargement</h2>
-                            <p class="text-lg">Impossible de charger les mythes. Le fichier de données est peut-être mal formaté.</p>
-                            <p class="text-sm mt-4 font-mono">${error.message}</p>
+            try {
+                myths = JSON.parse(document.getElementById('myth-data').textContent);
+            } catch (e) {
+                console.error("Erreur JSON", e);
+            }
+
+            // Gestion Pause UX
+            container.addEventListener('mouseenter', () => { isPaused = true; container.classList.add('scale-[1.01]'); });
+            container.addEventListener('mouseleave', () => { 
+                isPaused = false; 
+                startTime = Date.now() - (parseFloat(progressBar.style.width) / 100 * DUREE_ROTATION); 
+                container.classList.remove('scale-[1.01]');
+            });
+            container.addEventListener('touchstart', () => { isPaused = true; });
+            container.addEventListener('touchend', () => { 
+                isPaused = false; 
+                startTime = Date.now() - (parseFloat(progressBar.style.width) / 100 * DUREE_ROTATION); 
+            });
+
+            function renderMyth(myth) {
+                contentEl.className = 'fade-exit-active';
+                
+                setTimeout(() => {
+                    const html = `
+                        <div class="space-y-6 md:space-y-8">
+                            <div class="relative">
+                                <h2 class="text-xs font-bold text-red-400 tracking-[0.25em] uppercase mb-4 flex items-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-3 animate-pulse"></span>
+                                    Détection du Mythe
+                                </h2>
+                                <p class="text-2xl md:text-5xl font-bold text-white leading-[1.1] font-sans tracking-tight">
+                                    « ${myth.mythe} »
+                                </p>
+                            </div>
+
+                            <div class="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+                            <div class="relative pl-4 border-l-2 border-green-500/30">
+                                <h2 class="text-xs font-bold text-green-400 tracking-[0.25em] uppercase mb-3">
+                                    Réalité
+                                </h2>
+                                <p class="text-lg md:text-xl text-slate-300 leading-relaxed font-light">
+                                    ${myth.explication}
+                                </p>
+                            </div>
                         </div>
                     `;
+                    
+                    contentEl.innerHTML = html;
+                    idEl.textContent = myth.id;
+                    contentEl.className = 'fade-enter-active';
+                }, 300);
+            }
+
+            function tick() {
+                if (!isPaused) {
+                    const elapsed = Date.now() - startTime;
+                    const progress = (elapsed / DUREE_ROTATION) * 100;
+
+                    if (progress >= 100) {
+                        currentIndex = (currentIndex + 1) % myths.length;
+                        renderMyth(myths[currentIndex]);
+                        startTime = Date.now();
+                        progressBar.style.width = '0%';
+                    } else {
+                        progressBar.style.width = `${progress}%`;
+                    }
                 }
             }
 
-            // Lancer l'application
-            initialize();
+            if (myths.length > 0) {
+                renderMyth(myths[0]);
+                setInterval(tick, UPDATE_INTERVAL);
+            }
         });
     </script>
 </body>
 </html>
-
